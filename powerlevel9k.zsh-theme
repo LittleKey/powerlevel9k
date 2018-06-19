@@ -312,11 +312,11 @@ prompt_background_jobs() {
      background_jobs_number=$(( $background_jobs_number - $wrong_lines ))
   fi
   if [[ background_jobs_number -gt 0 ]]; then
-    local background_jobs_number_print=""
+    local background_jobs_number_print="\u2691"
     if [[ "$POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && [[ "$background_jobs_number" -gt 1 ]]; then
-      background_jobs_number_print="$background_jobs_number"
+      background_jobs_number_print="${background_jobs_number} \u2691"
     fi
-    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "$background_jobs_number_print" 'BACKGROUND_JOBS_ICON'
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$background_jobs_number_print"
   fi
 }
 
@@ -1097,7 +1097,7 @@ prompt_chruby() {
 # Print an icon if user is root.
 prompt_root_indicator() {
   if [[ "$UID" -eq 0 ]]; then
-    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "" 'ROOT_ICON'
+    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "ROOT_ICON"
   fi
 }
 
@@ -1187,12 +1187,10 @@ prompt_status() {
 
   if (( ec_sum > 0 )); then
     if [[ "$POWERLEVEL9K_STATUS_CROSS" == false && "$POWERLEVEL9K_STATUS_VERBOSE" == true ]]; then
-      "$1_prompt_segment" "$0_ERROR" "$2" "red" "226" "$ec_text" 'CARRIAGE_RETURN_ICON'
+      "$1_prompt_segment" "$0_ERROR" "$2" "red" "$DEFAULT_COLOR" "[● $ec_text]"
     else
-      "$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
+      "$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "\u2613"
     fi
-  elif [[ "$POWERLEVEL9K_STATUS_OK" == true ]] && [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true || "$POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
-    "$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "green" "" 'OK_ICON'
   fi
 }
 
@@ -1294,9 +1292,9 @@ powerlevel9k_vcs_init() {
   # The vcs segment can have three different states - defaults to 'clean'.
   typeset -gAH vcs_states
   vcs_states=(
-    'clean'         'green'
+    'clean'         'cyan'
     'modified'      'yellow'
-    'untracked'     'green'
+    'untracked'     'cyan'
   )
 
   VCS_CHANGESET_PREFIX=''
@@ -1393,7 +1391,7 @@ prompt_virtualenv() {
 # https://github.com/pyenv/pyenv#choosing-the-python-version
 prompt_pyenv() {
   if [[ -n "$PYENV_VERSION" ]]; then
-    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$PYENV_VERSION" 'PYTHON_ICON'
+    "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$PYENV_VERSION" 'PYTHON_ICON'
   fi
 }
 
