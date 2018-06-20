@@ -312,9 +312,9 @@ prompt_background_jobs() {
      background_jobs_number=$(( $background_jobs_number - $wrong_lines ))
   fi
   if [[ background_jobs_number -gt 0 ]]; then
-    local background_jobs_number_print="\u2691"
+    local background_jobs_number_print="\u16cb"
     if [[ "$POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && [[ "$background_jobs_number" -gt 1 ]]; then
-      background_jobs_number_print="${background_jobs_number} \u2691"
+      background_jobs_number_print="${background_jobs_number} \u16cb"
     fi
     "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$background_jobs_number_print"
   fi
@@ -1310,8 +1310,8 @@ powerlevel9k_vcs_init() {
 
   zstyle ':vcs_info:*' actionformats "%b %F{${POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND}}| %a%f"
 
-  zstyle ':vcs_info:*' stagedstr " \u2295"
-  zstyle ':vcs_info:*' unstagedstr " \u235f"
+  zstyle ':vcs_info:*' stagedstr " \u2691"
+  zstyle ':vcs_info:*' unstagedstr " \u2690"
 
   defined POWERLEVEL9K_VCS_GIT_HOOKS || POWERLEVEL9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-tagname)
   zstyle ':vcs_info:git*+set-message:*' hooks $POWERLEVEL9K_VCS_GIT_HOOKS
