@@ -659,7 +659,7 @@ prompt_custom() {
 
 # Display the duration the command needed to run.
 prompt_command_execution_time() {
-  set_default POWERLEVEL9K_COMMAND_EXECUTION_TIME_ALERT_THRESHOLD 30
+  set_default POWERLEVEL9K_COMMAND_EXECUTION_TIME_ALERT_THRESHOLD 600
   set_default POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD 3
   set_default POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION 2
 
@@ -689,7 +689,6 @@ prompt_command_execution_time() {
   if (( _P9K_COMMAND_DURATION >= POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
     if (( _P9K_COMMAND_DURATION >= POWERLEVEL9K_COMMAND_EXECUTION_TIME_ALERT_THRESHOLD )); then
       osascript -e 'display notification "Long task has been done." with title "Terminal"'
-      afplay /System/Library/Sounds/Ping.aiff -v 2
     fi
     "$1_prompt_segment" "$0" "$2" "red" "226" "${humanReadableDuration}" 'EXECUTION_TIME_ICON'
   fi
