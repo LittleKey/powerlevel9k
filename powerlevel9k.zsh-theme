@@ -311,6 +311,13 @@ prompt_background_jobs() {
   if [[ wrong_lines -gt 0 ]]; then
      background_jobs_number=$(( $background_jobs_number - $wrong_lines ))
   fi
+
+  # NOTE 辅助修正jobs在powerlevel中运行时, 会漏掉一个任务的问题
+  # NOTE 获取所有当前tty下的进程 | 过滤只保留stop的进程 | 统计数量
+  if [[ $(ps -t ${TTY:8} -o stat | grep "^T" | wc -l) -gt 0 ]]; then
+    background_jobs_number=$(( $background_jobs_number + 1 ))
+  fi
+
   if [[ background_jobs_number -gt 0 ]]; then
     local background_jobs_number_print="\u16cb"
     if [[ "$POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && [[ "$background_jobs_number" -gt 1 ]]; then
@@ -707,7 +714,7 @@ prompt_dir() {
         current_path=$(pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})\//\1$POWERLEVEL9K_SHORTEN_DELIMITER\2\//g")
       ;;
       truncate_from_right)
-        current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$GOPATH,🐁," | sed -e "s,^$HOME,~,")" )
+        current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$HOME,~,")" )
       ;;
       truncate_with_package_name)
         local name repo_path package_path current_dir zero
